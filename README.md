@@ -1,6 +1,6 @@
 # Stunning Landing Page
 
-制作具有滚动叙事、签名动画和高级视觉质感的 landing page 技能。给出一个主题或产品后，它会先判断品牌情绪与页面剧本，再产出可直接打开的单文件 HTML 页面。
+面向 Codex 及其他类似 AI agent 的可移植 skill，用于制作具有滚动叙事、签名动画和高级视觉质感的 landing page。给出一个主题或产品后，它会先判断品牌情绪与页面剧本，再产出可直接打开的单文件 HTML 页面。
 
 ## 在线预览
 
@@ -28,14 +28,14 @@
 
 ## 安装
 
-将仓库克隆到 Codex skills 目录：
+将仓库克隆到任意兼容 Skills 约定的 agent skills 目录中。Codex 用户可以使用下面的路径作为示例：
 
 ```bash
 mkdir -p ~/.codex/skills
 git clone https://github.com/rgzn7/stunning-landing-page.git ~/.codex/skills/stunning-landing-page
 ```
 
-也可以把本仓库目录复制到已有的 skills 目录中，目录名保持为 `stunning-landing-page`。
+其他类似 agent 也可以直接读取或导入本仓库目录；只要能加载 `SKILL.md` 和 `references/`，就可以复用同一套工作流。目录名建议保持为 `stunning-landing-page`。
 
 ## 使用示例
 
