@@ -4,9 +4,6 @@
 
 ## 在线预览
 
-GitHub Pages：
-
-- [项目展示页](https://rgzn7.github.io/stunning-landing-page/)
 - [山雾咖啡：温暖品牌系](https://rgzn7.github.io/stunning-landing-page/examples/coffee-brand-warm/)
 - [CodeLens：暗夜科技系](https://rgzn7.github.io/stunning-landing-page/examples/ai-devtool-dark/)
 - [码丁星球：活泼游戏系](https://rgzn7.github.io/stunning-landing-page/examples/kids-coding-playful/)
