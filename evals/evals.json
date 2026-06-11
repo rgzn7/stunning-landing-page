@@ -1,0 +1,56 @@
+{
+  "skill_name": "stunning-landing-page",
+  "evals": [
+    {
+      "id": 0,
+      "eval_name": "coffee-brand-warm",
+      "prompt": "给我的精品手冲咖啡品牌「山雾咖啡」做一个官网 landing page。我们主打云南高山豆，手工烘焙，希望页面有高级感和品牌质感，产出单个 HTML 文件。",
+      "expected_output": "温暖品牌系单页：衬线字体、低饱和暖色、舒缓的滚动叙事动画，有明确的签名动画时刻，文案贴合咖啡主题",
+      "files": [],
+      "assertions": [
+        "产出单个有效的 HTML 文件（outputs/ 下存在 index.html，含完整 html 结构）",
+        "实现了滚动驱动动画（代码中使用 ScrollTrigger、IntersectionObserver 或 scroll-timeline 之一）",
+        "实现了 prefers-reduced-motion 降级处理",
+        "Hero 标题有视觉冲击力（字号使用 clamp() 且上限不小于 4rem，或使用不小于 6vw 的视口单位）",
+        "无破图风险（不引用任何不存在的本地图片路径，占位图使用渐变/SVG/emoji/在线占位服务）",
+        "存在至少 3 处 hover 微交互反馈（:hover 规则或 JS hover 监听）",
+        "风格契合温暖品牌系：标题使用衬线字体（serif 字族）且配色为低饱和暖色调",
+        "文案为咖啡主题定制（出现云南/高山/手冲/烘焙等主题词，无 Lorem ipsum）"
+      ]
+    },
+    {
+      "id": 1,
+      "eval_name": "ai-devtool-dark",
+      "prompt": "我们要发布一个 AI 代码审查工具 CodeLens，帮我做一个产品发布落地页，要像 Linear、Vercel 官网那样酷炫有未来感，滚动的时候要有惊艳的动画。单个 HTML 文件就行。",
+      "expected_output": "暗色科技系单页：近黑底+辉光、玻璃拟态、GSAP 滚动编排、代码窗口等开发者元素，缓动统一有高级感",
+      "files": [],
+      "assertions": [
+        "产出单个有效的 HTML 文件（outputs/ 下存在 index.html，含完整 html 结构）",
+        "实现了滚动驱动动画（代码中使用 ScrollTrigger、IntersectionObserver 或 scroll-timeline 之一）",
+        "实现了 prefers-reduced-motion 降级处理",
+        "Hero 标题有视觉冲击力（字号使用 clamp() 且上限不小于 4rem，或使用不小于 6vw 的视口单位）",
+        "无破图风险（不引用任何不存在的本地图片路径）",
+        "存在签名级滚动编排（sticky/pin 定格叙事、横向滚动或 scrub 时间线之一，而不仅是基础 fade-in）",
+        "风格契合暗夜科技系：深色背景（接近黑的底色）且存在辉光或玻璃拟态效果（box-shadow 辉光 / backdrop-filter）",
+        "包含开发者元素（代码窗口、代码片段展示或终端样式元素）"
+      ]
+    },
+    {
+      "id": 2,
+      "eval_name": "kids-coding-playful",
+      "prompt": "给一个儿童编程教育 App「码丁星球」做一个宣传 landing page，目标受众是家长和孩子，希望像多邻国那样活泼有趣、有弹性动画，让人看了就想下载。输出一个 HTML 文件。",
+      "expected_output": "活泼游戏系单页：糖果色、圆角、弹性过冲缓动、3D 厚底按钮、庆祝粒子等 Duolingo 式微交互，兼顾家长信任感",
+      "files": [],
+      "assertions": [
+        "产出单个有效的 HTML 文件（outputs/ 下存在 index.html，含完整 html 结构）",
+        "实现了滚动驱动动画（代码中使用 ScrollTrigger、IntersectionObserver 或 scroll-timeline 之一）",
+        "实现了 prefers-reduced-motion 降级处理",
+        "无破图风险（不引用任何不存在的本地图片路径）",
+        "使用了弹性过冲缓动（back/elastic/bounce 缓动，或 cubic-bezier 第二/第四参数大于 1）",
+        "实现了 Duolingo 式 3D 厚底按压按钮（按钮有加深的厚底边框且 active 时下沉）或庆祝粒子效果",
+        "风格契合活泼游戏系：高饱和糖果色配色且卡片/按钮为大圆角",
+        "文案兼顾家长信任与儿童趣味（出现面向家长的安全/课程体系类内容）"
+      ]
+    }
+  ]
+}
