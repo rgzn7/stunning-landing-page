@@ -35,6 +35,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
 ```
 
+图标（**不要用 emoji 当图标**，统一引在线图标库，风格一致且可控大小颜色）：
+
+```html
+<!-- 方案一：Remix Icon（class 方式，简单直接） -->
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+<!-- 用法：<i class="ri-cup-line"></i>，font-size/color 控制大小颜色 -->
+
+<!-- 方案二：Iconify（按需加载任意图标集） -->
+<script src="https://cdn.jsdelivr.net/npm/iconify-icon@2.1.0/dist/iconify-icon.min.js"></script>
+<!-- 用法：<iconify-icon icon="lucide:coffee" width="32"></iconify-icon> -->
+```
+
 ## 二、基础设施片段
 
 ### Lenis + ScrollTrigger 联动（每个页面的标配开头）
@@ -249,7 +261,7 @@ document.querySelectorAll('.tilt').forEach((card) => {
 - **scrub 动画加缓冲**：`scrub: 0.6~1` 比 `scrub: true` 跟手且不生硬。
 - **`will-change` 只给正在动的大元素**，且数量克制（全页超过十几个反而更卡）。
 - **pin 容器内不要用百分比高度的子元素**，ScrollTrigger pin 会改 DOM 结构，易错位；pin 元素的父级避免 `overflow: hidden`。
-- **图片占位**：渐变 + SVG 图形 + 大号 emoji 组合造视觉图，或 `https://picsum.photos/800/600?random=1`。绝不引用不存在的本地路径（页面会出现破图）。
+- **图片占位**：渐变 + SVG 图形 + 图标库大图标组合造视觉图，或 `https://picsum.photos/800/600?random=1`。绝不引用不存在的本地路径（页面会出现破图）。全页不出现 emoji。
 - **移动端**：`mousemove` 类效果（视差、磁性、自定义光标、3D 倾斜）必须用 `matchMedia('(pointer: fine)')` 包裹；横向滚动章节在窄屏可改为原生横滑或纵向排列（用 `ScrollTrigger.matchMedia` / `gsap.matchMedia()`）。
 - **字体闪动**：标题动画前先等 `document.fonts.ready`，否则 SplitType 拆字后字体加载完成会错位。
 - **资源加载顺序**：所有动画初始化包在 `window.addEventListener('load', ...)` 或 DOMContentLoaded + fonts.ready 之后。

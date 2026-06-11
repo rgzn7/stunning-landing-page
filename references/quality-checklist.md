@@ -27,11 +27,12 @@
 ## 三、技术检查
 
 - [ ] 浏览器 console 无报错（CDN 加载失败、null 引用是高发区）
-- [ ] 所有图片可显示：占位图用渐变/SVG/emoji/picsum，无破图
+- [ ] 所有图片可显示：占位图用渐变/SVG/picsum，无破图
+- [ ] **全页零 emoji**：图标一律来自在线图标库（Remix Icon / Iconify）或内联 SVG，emoji 渲染因系统而异且显廉价
 - [ ] 动画只用 transform/opacity，滚动时无明显掉帧
 - [ ] `prefers-reduced-motion` 降级已实现
 - [ ] JS 失败时页面内容仍然可读（渐进增强，初始隐藏不要写死在 CSS）
-- [ ] 文件头部注释含 @Date / @Author / @Discription，代码注释为中文，无 emoji 出现在代码逻辑中（页面装饰性 emoji 图形可用）
+- [ ] 文件头部注释含 @Date / @Author / @Discription，代码注释为中文
 
 ## 四、响应式检查
 

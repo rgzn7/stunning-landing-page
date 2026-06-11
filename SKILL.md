@@ -66,7 +66,8 @@ Final Section (CTA)：情绪收束，行动召唤
 - 产出 `index.html` 单文件；如用户在已有项目里提需求，则遵循该项目结构
 - 动画首选 **GSAP + ScrollTrigger**（CDN），平滑滚动用 **Lenis**，文字拆字用 **SplitType**；简单效果优先纯 CSS，不要为一个 fade-in 引库
 - 只动画 `transform` 和 `opacity`，避免 layout 抖动
-- 图片用 CSS 渐变、SVG、emoji 占位图形或 `picsum.photos` 占位，**不要引用不存在的本地图片路径**
+- 图片用 CSS 渐变、SVG 插画或 `picsum.photos` 占位，**不要引用不存在的本地图片路径**
+- **禁止用 emoji 充当图标或装饰图形**：图标一律使用在线图标库（Remix Icon / Iconify CDN，见 tech-toolkit.md）或内联 SVG。emoji 在不同系统渲染不一致，且会瞬间拉低页面质感
 - 必须实现 `prefers-reduced-motion` 降级和移动端适配
 - 代码注释用中文，文件头部含 `@Date / @Author: xisy / @Discription`
 

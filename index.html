@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<!--
+  @Date: 2026-06-11
+  @Author: xisy
+  @Discription: Stunning Landing Page skill 的 GitHub Pages 展示页。
+-->
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Stunning Landing Page 是一个用于生成高级动效 landing page 的 Codex skill。">
+  <title>Stunning Landing Page</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;900&family=Newsreader:opsz,wght@6..72,600;6..72,800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+  <style>
+    :root {
+      --paper: #f7f4ec;
+      --paper-2: #ebe5d8;
+      --ink: #161616;
+      --muted: rgba(22, 22, 22, .62);
+      --line: rgba(22, 22, 22, .12);
+      --green: #1d6f5f;
+      --amber: #c7822b;
+      --blue: #285ed8;
+      --night: #0d1117;
+      --white: #fffaf1;
+      --ease: cubic-bezier(.22, 1, .36, 1);
+      --display: "Newsreader", "Noto Sans SC", serif;
+      --body: "Noto Sans SC", "PingFang SC", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--body);
+      line-height: 1.75;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(circle at 12% 14%, rgba(199, 130, 43, .26), transparent 28rem),
+        radial-gradient(circle at 88% 18%, rgba(40, 94, 216, .18), transparent 30rem),
+        linear-gradient(135deg, var(--paper), var(--paper-2));
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .045;
+      z-index: 20;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 10;
+      border-bottom: 1px solid rgba(22, 22, 22, .08);
+      background: rgba(247, 244, 236, .72);
+      backdrop-filter: blur(18px);
+    }
+
+    .nav-inner {
+      width: min(1160px, calc(100vw - 40px));
+      height: 68px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 900;
+      letter-spacing: .02em;
+    }
+
+    .brand-mark {
+      width: 30px;
+      height: 30px;
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      border-radius: 50%;
+      background: conic-gradient(from 160deg, var(--green), var(--amber), var(--blue), var(--green));
+      box-shadow: 0 10px 30px rgba(29, 111, 95, .24);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon-link,
+    .button {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      color: var(--ink);
+      background: rgba(255, 250, 241, .62);
+      transition: transform .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease);
+    }
+
+    .icon-link {
+      width: 40px;
+      border-radius: 50%;
+      font-size: 1.1rem;
+    }
+
+    .button {
+      padding: 0 18px;
+      border-radius: 999px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .button.primary {
+      color: var(--white);
+      border-color: transparent;
+      background: var(--ink);
+    }
+
+    .icon-link:hover,
+    .button:hover {
+      transform: translateY(-2px);
+      border-color: rgba(22, 22, 22, .24);
+      background: rgba(255, 250, 241, .9);
+    }
+
+    .button.primary:hover { background: var(--green); }
+
+    .hero {
+      min-height: 100svh;
+      padding: 128px 0 72px;
+      position: relative;
+      display: grid;
+      align-items: center;
+    }
+
+    .hero-inner {
+      width: min(1160px, calc(100vw - 40px));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: minmax(0, .92fr) minmax(360px, 1.08fr);
+      align-items: center;
+      gap: clamp(32px, 6vw, 80px);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--green);
+      font-weight: 900;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      font-size: .78rem;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 32px;
+      height: 1px;
+      background: currentColor;
+    }
+
+    h1 {
+      margin: 18px 0 22px;
+      font-family: var(--display);
+      font-size: clamp(4rem, 10vw, 9rem);
+      line-height: .85;
+      letter-spacing: 0;
+      max-width: 9ch;
+    }
+
+    .lead {
+      max-width: 620px;
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(1.05rem, 1.6vw, 1.28rem);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .command {
+      width: min(100%, 620px);
+      margin-top: 24px;
+      padding: 16px 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: rgba(255, 250, 241, .86);
+      background: var(--night);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: .88rem;
+      overflow-x: auto;
+    }
+
+    .preview-stack {
+      position: relative;
+      min-height: 590px;
+      display: grid;
+      place-items: center;
+    }
+
+    .preview-card {
+      position: absolute;
+      width: min(78vw, 540px);
+      aspect-ratio: 16 / 10;
+      border: 1px solid rgba(255, 250, 241, .68);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--white);
+      box-shadow: 0 32px 80px rgba(22, 22, 22, .18);
+      transform-origin: center;
+      transition: transform .45s var(--ease), box-shadow .45s var(--ease);
+    }
+
+    .preview-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+    }
+
+    .preview-card:nth-child(1) {
+      transform: translate(-14%, -22%) rotate(-7deg);
+      z-index: 1;
+    }
+
+    .preview-card:nth-child(2) {
+      transform: translate(10%, 2%) rotate(3deg);
+      z-index: 3;
+    }
+
+    .preview-card:nth-child(3) {
+      transform: translate(-5%, 25%) rotate(-2deg);
+      z-index: 2;
+    }
+
+    .preview-stack:hover .preview-card:nth-child(1) { transform: translate(-24%, -27%) rotate(-9deg); }
+    .preview-stack:hover .preview-card:nth-child(2) { transform: translate(15%, 0) rotate(4deg); box-shadow: 0 42px 100px rgba(22, 22, 22, .24); }
+    .preview-stack:hover .preview-card:nth-child(3) { transform: translate(-13%, 31%) rotate(-4deg); }
+
+    .section {
+      width: min(1160px, calc(100vw - 40px));
+      margin: 0 auto;
+      padding: 88px 0;
+    }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 28px;
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      max-width: 720px;
+      margin: 0;
+      font-family: var(--display);
+      font-size: clamp(2.4rem, 5vw, 5.6rem);
+      line-height: .96;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 420px;
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .examples {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .example {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: rgba(255, 250, 241, .58);
+      transition: transform .35s var(--ease), border-color .35s var(--ease), box-shadow .35s var(--ease);
+    }
+
+    .example:hover {
+      transform: translateY(-6px);
+      border-color: rgba(22, 22, 22, .24);
+      box-shadow: 0 22px 55px rgba(22, 22, 22, .12);
+    }
+
+    .example-media {
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+      background: var(--paper-2);
+    }
+
+    .example-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top;
+      transition: transform .5s var(--ease);
+    }
+
+    .example:hover img { transform: scale(1.04); }
+
+    .example-body { padding: 20px; }
+
+    .example h3 {
+      margin: 0 0 8px;
+      font-size: 1.15rem;
+    }
+
+    .example p {
+      min-height: 78px;
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: .94rem;
+    }
+
+    .example span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--green);
+      font-weight: 900;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 26px;
+    }
+
+    .feature {
+      min-height: 180px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 250, 241, .5);
+    }
+
+    .feature i {
+      color: var(--amber);
+      font-size: 1.5rem;
+    }
+
+    .feature h3 {
+      margin: 16px 0 8px;
+      font-size: 1rem;
+    }
+
+    .feature p {
+      margin: 0;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .benchmark {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 18px;
+      align-items: stretch;
+    }
+
+    .metric,
+    .note {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: rgba(255, 250, 241, .6);
+      padding: 24px;
+    }
+
+    .metric strong {
+      display: block;
+      font-family: var(--display);
+      font-size: clamp(3.2rem, 8vw, 7rem);
+      line-height: .9;
+      color: var(--green);
+    }
+
+    .metric span {
+      display: block;
+      margin-top: 12px;
+      color: var(--muted);
+    }
+
+    .note ul {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--muted);
+    }
+
+    .footer {
+      width: min(1160px, calc(100vw - 40px));
+      margin: 0 auto;
+      padding: 54px 0 40px;
+      border-top: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    @media (max-width: 940px) {
+      .hero-inner,
+      .benchmark {
+        grid-template-columns: 1fr;
+      }
+
+      .preview-stack { min-height: 500px; }
+      .examples { grid-template-columns: 1fr; }
+      .grid { grid-template-columns: repeat(2, 1fr); }
+      .section-head { display: block; }
+      .section-head p { margin-top: 16px; }
+    }
+
+    @media (max-width: 620px) {
+      .nav-inner { width: min(100% - 28px, 1160px); }
+      .nav-actions .button:not(.primary) { display: none; }
+      .hero { padding-top: 108px; }
+      .hero-inner,
+      .section,
+      .footer {
+        width: min(100% - 28px, 1160px);
+      }
+      h1 { font-size: clamp(3.4rem, 18vw, 5.4rem); }
+      .preview-stack { min-height: 360px; }
+      .preview-card { width: min(82vw, 390px); }
+      .grid { grid-template-columns: 1fr; }
+      .footer { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: .001ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .001ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav" aria-label="主导航">
+    <div class="nav-inner">
+      <a class="brand" href="#top" aria-label="Stunning Landing Page 首页">
+        <span class="brand-mark"><i class="ri-sparkling-line" aria-hidden="true"></i></span>
+        <span>Stunning Landing Page</span>
+      </a>
+      <div class="nav-actions">
+        <a class="button" href="#examples">查看示例</a>
+        <a class="icon-link" href="https://github.com/rgzn7/stunning-landing-page" aria-label="GitHub 仓库">
+          <i class="ri-github-line" aria-hidden="true"></i>
+        </a>
+        <a class="button primary" href="https://github.com/rgzn7/stunning-landing-page">安装 Skill</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="eyebrow">Codex Skill</div>
+          <h1>把主题变成会呼吸的官网</h1>
+          <p class="lead">一个用于生成高级动效 landing page 的技能。它先写滚动叙事剧本，再选择签名动画、视觉系统和技术栈，最后输出可直接打开的单文件 HTML。</p>
+          <div class="hero-actions">
+            <a class="button primary" href="#examples"><i class="ri-play-circle-line" aria-hidden="true"></i>预览效果</a>
+            <a class="button" href="https://github.com/rgzn7/stunning-landing-page"><i class="ri-download-line" aria-hidden="true"></i>查看源码</a>
+          </div>
+          <div class="command">使用 $stunning-landing-page 为我的产品做一个有滚动叙事和高级动效的官网首页。</div>
+        </div>
+        <div class="preview-stack" aria-label="示例页面预览">
+          <a class="preview-card" href="examples/coffee-brand-warm/"><img src="docs/screenshots/coffee-brand-warm.png" alt="山雾咖啡示例首屏"></a>
+          <a class="preview-card" href="examples/ai-devtool-dark/"><img src="docs/screenshots/ai-devtool-dark.png" alt="CodeLens 示例首屏"></a>
+          <a class="preview-card" href="examples/kids-coding-playful/"><img src="docs/screenshots/kids-coding-playful.png" alt="码丁星球示例首屏"></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="examples">
+      <div class="section-head">
+        <h2>三个方向，三种情绪</h2>
+        <p>示例都来自同一套 skill 流程：先定调，再编排滚动剧本，最后用单文件 HTML 落地。</p>
+      </div>
+      <div class="examples">
+        <a class="example" href="examples/coffee-brand-warm/">
+          <div class="example-media"><img src="docs/screenshots/coffee-brand-warm.png" alt="山雾咖啡 landing page 预览"></div>
+          <div class="example-body">
+            <h3>山雾咖啡</h3>
+            <p>温暖品牌系，奶油底、衬线字体、云南高山豆叙事和横向滚动章节。</p>
+            <span>打开示例 <i class="ri-arrow-right-up-line" aria-hidden="true"></i></span>
+          </div>
+        </a>
+        <a class="example" href="examples/ai-devtool-dark/">
+          <div class="example-media"><img src="docs/screenshots/ai-devtool-dark.png" alt="CodeLens landing page 预览"></div>
+          <div class="example-body">
+            <h3>CodeLens</h3>
+            <p>暗夜科技系，开发者代码窗口、辉光、玻璃拟态和 sticky 定格叙事。</p>
+            <span>打开示例 <i class="ri-arrow-right-up-line" aria-hidden="true"></i></span>
+          </div>
+        </a>
+        <a class="example" href="examples/kids-coding-playful/">
+          <div class="example-media"><img src="docs/screenshots/kids-coding-playful.png" alt="码丁星球 landing page 预览"></div>
+          <div class="example-body">
+            <h3>码丁星球</h3>
+            <p>活泼游戏系，糖果色、弹性过冲、3D 按压按钮和庆祝粒子。</p>
+            <span>打开示例 <i class="ri-arrow-right-up-line" aria-hidden="true"></i></span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>不是模板，是一套创作流程</h2>
+        <p>skill 会按主题选择风格、动画和工程约束，避免只生成一页漂亮但空泛的卡片合集。</p>
+      </div>
+      <div class="grid">
+        <div class="feature">
+          <i class="ri-route-line" aria-hidden="true"></i>
+          <h3>滚动叙事</h3>
+          <p>每屏只讲一个重点，动效服务于页面故事。</p>
+        </div>
+        <div class="feature">
+          <i class="ri-magic-line" aria-hidden="true"></i>
+          <h3>签名动画</h3>
+          <p>为 Hero 或核心卖点设计一个可记住的视觉时刻。</p>
+        </div>
+        <div class="feature">
+          <i class="ri-palette-line" aria-hidden="true"></i>
+          <h3>视觉系统</h3>
+          <p>先确定配色、字体、质感层和缓动曲线，再进入编码。</p>
+        </div>
+        <div class="feature">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+          <h3>单文件交付</h3>
+          <p>默认输出内联 CSS/JS 的 HTML 文件，方便预览和迁移。</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="benchmark">
+        <div class="metric">
+          <strong>100%</strong>
+          <span>当前 3 个场景核心断言通过率。评测包含滚动动画、动效降级、无破图路径、主题文案和视觉风格匹配。</span>
+        </div>
+        <div class="note">
+          <ul>
+            <li>精品咖啡品牌：温暖品牌系。</li>
+            <li>AI 开发者工具：暗夜科技系。</li>
+            <li>儿童编程 App：活泼游戏系。</li>
+            <li><a href="docs/benchmark.md">查看评测摘要</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>MIT License. Designed as a public Codex skill by xisy.</span>
+    <a href="https://github.com/rgzn7/stunning-landing-page">github.com/rgzn7/stunning-landing-page</a>
+  </footer>
+</body>
+</html>

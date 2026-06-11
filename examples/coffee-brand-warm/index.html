@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<!--
+  @Date: 2026-06-11
+  @Author: xisy
+  @Discription: 山雾咖啡品牌官网 landing page —— 温暖品牌系单页网站。
+                云南高山豆 / 手工烘焙，奶油底 + 深咖文字 + 琥珀点缀，
+                签名动画为"豆子的旅程"横向滚动章节与 Hero 蒸汽路径动画。
+                技术栈：GSAP + ScrollTrigger + Lenis + SplitType（CDN），单文件零构建。
+-->
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>山雾咖啡 — 云南高山豆 · 手工烘焙</title>
+<meta name="description" content="山雾咖啡，来自云南海拔 1900 米的高山庄园，红果手摘、日晒发酵、小批次手工烘焙。订一袋，把山间晨雾注入你的清晨。">
+<!-- 字体：标题用思源宋体 + Fraunces（英文衬线），正文思源黑体 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;600;700;900&family=Noto+Sans+SC:wght@300;400;500&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+
+<style>
+/* ===================== 视觉系统变量 ===================== */
+:root {
+  --cream: #f6f0e5;          /* 奶油底色 */
+  --cream-deep: #efe6d6;     /* 奶油加深一档，分区用 */
+  --ink: #2a1c10;            /* 深咖啡文字 */
+  --ink-soft: rgba(42, 28, 16, .62);  /* 次级文字 */
+  --ink-faint: rgba(42, 28, 16, .34); /* 弱文字 / 待高亮词 */
+  --amber: #b9803c;          /* 琥珀强调色 */
+  --amber-deep: #93612a;     /* 琥珀加深，hover 用 */
+  --dark: #1c130b;           /* 暗色收束区底色 */
+  --dark-2: #241a10;         /* 暗区卡片 */
+  --line: rgba(42, 28, 16, .14);      /* 细分割线 */
+  --serif: 'Noto Serif SC', 'Songti SC', serif;
+  --serif-en: 'Fraunces', 'Noto Serif SC', serif;
+  --sans: 'Noto Sans SC', 'PingFang SC', sans-serif;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);  /* 全页统一缓动 */
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: auto; }
+body {
+  background: var(--cream);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-weight: 400;
+  line-height: 1.8;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 噪点 overlay：全页纸张质感，消除数码塑料感 */
+body::after {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999; opacity: .05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection { background: var(--amber); color: var(--cream); }
+
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+img { max-width: 100%; display: block; }
+
+/* ===================== 通用排版 ===================== */
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 6vw; }
+
+.kicker {
+  font-family: var(--serif-en);
+  font-style: italic;
+  font-size: .85rem;
+  letter-spacing: .35em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: flex; align-items: center; gap: 1rem;
+}
+.kicker::before { content: ''; width: 2.6rem; height: 1px; background: var(--amber); }
+
+.sec-title {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: clamp(2rem, 4.6vw, 3.6rem);
+  line-height: 1.25;
+  letter-spacing: .02em;
+  margin-top: 1.2rem;
+}
+
+.sec-num {
+  font-family: var(--serif-en);
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(4rem, 9vw, 7.5rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(42,28,16,.28);
+}
+
+/* ===================== 导航 ===================== */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.4rem 4vw;
+  transition: background .5s var(--ease-out), box-shadow .5s var(--ease-out), padding .5s var(--ease-out);
+}
+.nav.is-scrolled {
+  background: rgba(246, 240, 229, .82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 1px 0 var(--line);
+  padding: .9rem 4vw;
+}
+.nav-logo {
+  font-family: var(--serif); font-weight: 900; font-size: 1.3rem; letter-spacing: .14em;
+  display: flex; align-items: center; gap: .6rem;
+}
+.nav-logo svg { width: 26px; height: 26px; }
+.nav-links { display: flex; gap: 2.6rem; font-size: .92rem; letter-spacing: .08em; }
+.nav-links a { position: relative; padding: .2rem 0; }
+/* 链接下划线从左到右生长 */
+.nav-links a::after {
+  content: ''; position: absolute; left: 0; bottom: 0; height: 1px; width: 100%;
+  background: var(--ink); transform: scaleX(0); transform-origin: right;
+  transition: transform .5s var(--ease-out);
+}
+.nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+.nav-cta {
+  font-size: .88rem; letter-spacing: .1em;
+  border: 1px solid var(--ink); border-radius: 99px;
+  padding: .55rem 1.5rem;
+  transition: background .4s var(--ease-out), color .4s var(--ease-out);
+}
+.nav-cta:hover { background: var(--ink); color: var(--cream); }
+@media (max-width: 768px) { .nav-links { display: none; } }
+
+/* ===================== Hero ===================== */
+.hero {
+  position: relative; min-height: 100svh;
+  display: flex; flex-direction: column; justify-content: center;
+  overflow: hidden;
+  padding: 7rem 4vw 0;
+}
+/* 远景山雾：柔和径向色斑缓慢漂移 */
+.hero-mist { position: absolute; inset: 0; pointer-events: none; }
+.hero-mist i {
+  position: absolute; border-radius: 50%; filter: blur(90px); opacity: .5;
+}
+.hero-mist i:nth-child(1) { width: 52vw; height: 52vw; background: #e8d9bd; top: -18%; right: -10%; animation: mist1 22s ease-in-out infinite alternate; }
+.hero-mist i:nth-child(2) { width: 40vw; height: 40vw; background: #dcc9a8; bottom: -8%; left: -12%; animation: mist2 26s ease-in-out infinite alternate; }
+@keyframes mist1 { to { transform: translate(-8vw, 9vh) scale(1.12); } }
+@keyframes mist2 { to { transform: translate(10vw, -6vh) scale(.92); } }
+
+.hero-inner { position: relative; z-index: 3; max-width: 1180px; margin: 0 auto; width: 100%; }
+
+.hero-kicker {
+  font-family: var(--serif-en); font-style: italic;
+  letter-spacing: .4em; text-transform: uppercase;
+  font-size: clamp(.72rem, 1.4vw, .9rem); color: var(--amber);
+  margin-bottom: 2rem;
+}
+
+.hero-title {
+  font-family: var(--serif);
+  font-weight: 900;
+  font-size: clamp(3.2rem, 10.5vw, 8.2rem);
+  line-height: 1.16;
+  letter-spacing: .03em;
+}
+.hero-title .line { overflow: hidden; }      /* 逐字浮起的遮罩行 */
+.hero-title em {
+  font-style: normal; color: var(--amber);
+}
+
+.hero-sub {
+  margin-top: 2.2rem; max-width: 30em;
+  color: var(--ink-soft); font-size: clamp(.95rem, 1.6vw, 1.08rem);
+  font-weight: 300; letter-spacing: .04em;
+}
+
+.hero-actions { margin-top: 3rem; display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; }
+
+/* 主按钮：深咖底 + 文字滚动替换 */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: .8rem;
+  background: var(--ink); color: var(--cream);
+  border-radius: 99px; padding: 1.05rem 2.4rem;
+  font-size: .95rem; letter-spacing: .12em; cursor: pointer; border: none;
+  font-family: var(--sans); position: relative; overflow: hidden;
+  transition: background .4s var(--ease-out);
+}
+.btn-primary:hover { background: var(--amber-deep); }
+.btn-primary .txt { position: relative; display: inline-block; overflow: hidden; height: 1.6em; line-height: 1.6em; }
+.btn-primary .txt span { display: block; transition: transform .5s var(--ease-out); }
+.btn-primary .txt span:last-child { position: absolute; top: 100%; left: 0; }
+.btn-primary:hover .txt span { transform: translateY(-100%); }
+.btn-primary .arrow { transition: transform .5s var(--ease-out); }
+.btn-primary:hover .arrow { transform: translateX(5px); }
+
+.btn-ghost {
+  font-size: .92rem; letter-spacing: .1em; color: var(--ink-soft);
+  display: inline-flex; align-items: center; gap: .6rem;
+  border-bottom: 1px solid var(--line); padding-bottom: .3rem;
+  transition: color .4s var(--ease-out), border-color .4s var(--ease-out);
+  cursor: pointer; background: none; border-top: none; border-left: none; border-right: none;
+  font-family: var(--sans);
+}
+.btn-ghost:hover { color: var(--ink); border-color: var(--ink); }
+
+/* Hero 右下角的杯与蒸汽插画 */
+.hero-cup {
+  position: absolute; z-index: 2;
+  right: 5vw; bottom: 16vh;
+  width: clamp(180px, 24vw, 340px);
+  pointer-events: none;
+}
+.hero-cup .steam-path {
+  fill: none; stroke: var(--amber); stroke-width: 2.5; stroke-linecap: round; opacity: .8;
+}
+/* 蒸汽缭绕：绘制完成后持续轻微上飘 */
+.steam-drift { animation: steamFloat 5s ease-in-out infinite alternate; }
+@keyframes steamFloat { to { transform: translateY(-9px); } }
+@media (max-width: 900px) { .hero-cup { right: -4vw; bottom: 9vh; opacity: .55; } }
+
+/* Hero 底部山脉剪影（双层视差） */
+.hero-mountains {
+  position: absolute; left: 0; right: 0; bottom: -2px; z-index: 1;
+  pointer-events: none; line-height: 0;
+}
+.hero-mountains svg { width: 100%; height: auto; display: block; }
+
+/* 滚动提示 */
+.scroll-hint {
+  position: absolute; bottom: 2.4rem; left: 50%; transform: translateX(-50%);
+  z-index: 4; display: flex; flex-direction: column; align-items: center; gap: .7rem;
+  font-size: .72rem; letter-spacing: .4em; color: var(--ink-soft);
+  writing-mode: horizontal-tb;
+}
+.scroll-hint i {
+  width: 1px; height: 3.2rem; background: var(--ink-soft); display: block;
+  transform-origin: top; animation: hintLine 2.2s var(--ease-out) infinite;
+}
+@keyframes hintLine { 0% { transform: scaleY(0); } 45% { transform: scaleY(1); transform-origin: top; } 46% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+/* ===================== 宣言区：逐词高亮 ===================== */
+.manifesto {
+  padding: clamp(7rem, 16vh, 11rem) 0;
+  background: var(--cream);
+}
+.manifesto-text {
+  font-family: var(--serif);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 3.6vw, 2.7rem);
+  line-height: 1.85;
+  letter-spacing: .03em;
+  max-width: 21em;
+}
+.manifesto-text .w { color: var(--ink-faint); transition: none; } /* 待点亮的词，由 GSAP 驱动 */
+.manifesto-text .w.hl { color: var(--amber); }                     /* 关键词点亮为琥珀 */
+
+/* ===================== 豆子的旅程：横向滚动（签名动画） ===================== */
+.journey { background: var(--cream-deep); position: relative; }
+.journey-head { padding: clamp(5rem, 12vh, 8rem) 0 3rem; }
+.journey-head .wrap { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; flex-wrap: wrap; }
+.journey-hint { font-size: .8rem; letter-spacing: .3em; color: var(--ink-soft); padding-bottom: .8rem; }
+
+.journey-stage { overflow: hidden; }
+.journey-track {
+  display: flex; gap: clamp(1.5rem, 3vw, 3rem);
+  padding: 1rem 6vw 6rem;
+  width: max-content;
+  align-items: stretch;
+}
+.j-card {
+  position: relative;
+  width: clamp(300px, 34vw, 460px);
+  background: var(--cream);
+  border: 1px solid var(--line);
+  border-radius: 4px 4px 160px 4px;  /* 单角拱形裁切，呼应温暖品牌系 */
+  padding: clamp(2rem, 3vw, 3rem);
+  display: flex; flex-direction: column;
+  min-height: clamp(420px, 56vh, 540px);
+  transition: transform .6s var(--ease-out), box-shadow .6s var(--ease-out);
+}
+.j-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(42,28,16,.12); }
+.j-card .j-num {
+  font-family: var(--serif-en); font-style: italic; font-size: 3.4rem; font-weight: 400;
+  color: transparent; -webkit-text-stroke: 1px var(--amber); line-height: 1;
+}
+.j-card .j-icon { margin: 2rem 0 1.5rem; width: 84px; height: 84px; }
+.j-card h3 {
+  font-family: var(--serif); font-weight: 700; font-size: 1.5rem; letter-spacing: .04em;
+}
+.j-card .j-en {
+  font-family: var(--serif-en); font-style: italic; font-size: .82rem;
+  letter-spacing: .22em; text-transform: uppercase; color: var(--amber); margin-top: .3rem;
+}
+.j-card p { margin-top: 1.1rem; color: var(--ink-soft); font-size: .94rem; font-weight: 300; flex: 1; }
+.j-card .j-data {
+  margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid var(--line);
+  font-family: var(--serif-en); font-size: .85rem; letter-spacing: .12em; color: var(--ink-soft);
+}
+.j-card .j-data b { color: var(--ink); font-weight: 600; font-size: 1.05rem; }
+
+/* 窄屏降级：横向滚动改为纵向排列 */
+@media (max-width: 768px) {
+  .journey-track { flex-direction: column; width: 100%; padding: 1rem 6vw 4rem; }
+  .j-card { width: 100%; min-height: 0; }
+  .journey-hint { display: none; }
+}
+
+/* ===================== 数字区 ===================== */
+.stats {
+  background: var(--cream-deep);
+  border-top: 1px solid var(--line);
+  padding: clamp(4rem, 10vh, 7rem) 0;
+}
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+}
+.stat .stat-val {
+  font-family: var(--serif-en); font-weight: 600;
+  font-size: clamp(2.6rem, 5.4vw, 4.4rem); line-height: 1.1; color: var(--ink);
+  display: flex; align-items: baseline;
+}
+.stat .stat-unit { font-size: .45em; font-style: italic; color: var(--amber); margin-left: .25em; }
+.stat .stat-label { margin-top: .6rem; font-size: .85rem; letter-spacing: .14em; color: var(--ink-soft); }
+@media (max-width: 768px) { .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 2.5rem 1.5rem; } }
+
+/* ===================== 豆单 ===================== */
+.beans { padding: clamp(6rem, 14vh, 10rem) 0; }
+.beans-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; flex-wrap: wrap; margin-bottom: 4rem; }
+.beans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.4rem, 2.4vw, 2.4rem); }
+.bean-card {
+  border: 1px solid var(--line); border-radius: 4px;
+  background: var(--cream); overflow: hidden;
+  transition: transform .6s var(--ease-out), box-shadow .6s var(--ease-out);
+  display: flex; flex-direction: column;
+}
+.bean-card:hover { transform: translateY(-12px); box-shadow: 0 36px 70px rgba(42,28,16,.14); }
+.bean-visual {
+  position: relative; aspect-ratio: 4/3; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.bean-visual svg { width: 56%; height: auto; transition: transform .8s var(--ease-out); }
+.bean-card:hover .bean-visual svg { transform: scale(1.08) rotate(-4deg); }
+.bean-tag {
+  position: absolute; top: 1rem; left: 1rem;
+  font-size: .68rem; letter-spacing: .22em; padding: .3rem .8rem;
+  border: 1px solid rgba(42,28,16,.3); border-radius: 99px; color: var(--ink-soft);
+  background: rgba(246,240,229,.6); backdrop-filter: blur(4px);
+}
+.bean-body { padding: 1.8rem 1.8rem 2rem; flex: 1; display: flex; flex-direction: column; }
+.bean-body h3 { font-family: var(--serif); font-weight: 700; font-size: 1.35rem; letter-spacing: .04em; }
+.bean-body .bean-notes {
+  margin-top: .5rem; font-family: var(--serif-en); font-style: italic;
+  font-size: .85rem; color: var(--amber); letter-spacing: .06em;
+}
+.bean-body p { margin-top: 1rem; font-size: .9rem; font-weight: 300; color: var(--ink-soft); flex: 1; }
+.bean-foot {
+  margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.bean-price { font-family: var(--serif-en); font-weight: 600; font-size: 1.25rem; }
+.bean-price small { font-size: .65em; color: var(--ink-soft); font-weight: 400; }
+.bean-link { font-size: .82rem; letter-spacing: .14em; color: var(--amber-deep); position: relative; }
+.bean-link::after {
+  content: ''; position: absolute; left: 0; bottom: -3px; height: 1px; width: 100%;
+  background: var(--amber-deep); transform: scaleX(0); transform-origin: right;
+  transition: transform .5s var(--ease-out);
+}
+.bean-card:hover .bean-link::after { transform: scaleX(1); transform-origin: left; }
+@media (max-width: 900px) { .beans-grid { grid-template-columns: 1fr; max-width: 460px; margin: 0 auto; } }
+
+/* ===================== 证言 marquee ===================== */
+.voices { padding: 0 0 clamp(6rem, 13vh, 9rem); }
+.voices-label {
+  text-align: center; font-family: var(--serif-en); font-style: italic;
+  letter-spacing: .35em; text-transform: uppercase; font-size: .8rem;
+  color: var(--amber); margin-bottom: 3rem;
+}
+.marquee { overflow: hidden; position: relative; }
+/* 两端渐隐遮罩 */
+.marquee::before, .marquee::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 14vw; z-index: 2; pointer-events: none;
+}
+.marquee::before { left: 0; background: linear-gradient(90deg, var(--cream), transparent); }
+.marquee::after { right: 0; background: linear-gradient(-90deg, var(--cream), transparent); }
+.marquee-track {
+  display: flex; gap: 2rem; width: max-content;
+  animation: marqueeScroll 38s linear infinite;
+  padding: .5rem 0;
+}
+.marquee:hover .marquee-track { animation-play-state: paused; }
+@keyframes marqueeScroll { to { transform: translateX(-50%); } }
+.voice-card {
+  width: clamp(280px, 30vw, 400px);
+  border: 1px solid var(--line); border-radius: 4px;
+  padding: 1.8rem 2rem; background: var(--cream);
+  flex-shrink: 0;
+}
+.voice-card .v-quote {
+  font-family: var(--serif); font-size: 1.02rem; line-height: 1.9; font-weight: 500;
+}
+.voice-card .v-quote::before { content: '「'; color: var(--amber); }
+.voice-card .v-quote::after { content: '」'; color: var(--amber); }
+.voice-card .v-who { margin-top: 1.2rem; font-size: .8rem; letter-spacing: .12em; color: var(--ink-soft); }
+.voice-card .v-who b { color: var(--ink); font-weight: 500; }
+
+/* ===================== 暗色收束 CTA ===================== */
+.finale {
+  background: var(--dark); color: #f3ead9;
+  position: relative; overflow: hidden;
+  padding: clamp(8rem, 20vh, 13rem) 0;
+  text-align: center;
+}
+/* 暗区里的琥珀辉光 */
+.finale::before {
+  content: ''; position: absolute; left: 50%; top: 58%;
+  width: 60vw; height: 60vw; transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(185,128,60,.22), transparent 65%);
+  pointer-events: none;
+}
+.finale-kicker {
+  font-family: var(--serif-en); font-style: italic; letter-spacing: .4em;
+  text-transform: uppercase; font-size: .8rem; color: var(--amber);
+}
+.finale-title {
+  font-family: var(--serif); font-weight: 900;
+  font-size: clamp(2.6rem, 7.5vw, 5.6rem); line-height: 1.3; letter-spacing: .03em;
+  margin-top: 1.6rem; position: relative; z-index: 2;
+}
+.finale-sub { margin-top: 1.6rem; color: rgba(243,234,217,.6); font-weight: 300; font-size: .98rem; letter-spacing: .06em; position: relative; z-index: 2; }
+.finale-actions { margin-top: 3.4rem; display: flex; justify-content: center; gap: 1.6rem; flex-wrap: wrap; position: relative; z-index: 2; }
+.btn-finale {
+  display: inline-flex; align-items: center; gap: .8rem;
+  background: var(--amber); color: var(--dark);
+  border-radius: 99px; padding: 1.15rem 2.8rem;
+  font-size: 1rem; letter-spacing: .14em; font-weight: 500;
+  cursor: pointer; border: none; font-family: var(--sans);
+  box-shadow: 0 0 60px rgba(185,128,60,.35);
+  transition: background .4s var(--ease-out), box-shadow .4s var(--ease-out), transform .4s var(--ease-out);
+}
+.btn-finale:hover { background: #d09a52; box-shadow: 0 0 90px rgba(208,154,82,.5); }
+.finale-note { margin-top: 1.8rem; font-size: .8rem; letter-spacing: .14em; color: rgba(243,234,217,.4); position: relative; z-index: 2; }
+
+/* ===================== 页脚 ===================== */
+.footer {
+  background: var(--dark); color: rgba(243,234,217,.55);
+  border-top: 1px solid rgba(243,234,217,.1);
+  padding: 3.2rem 0;
+  font-size: .82rem; letter-spacing: .08em;
+}
+.footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+.footer-logo { font-family: var(--serif); font-weight: 700; letter-spacing: .14em; color: #f3ead9; font-size: 1rem; }
+.footer-links { display: flex; gap: 2rem; }
+.footer-links a { transition: color .4s var(--ease-out); }
+.footer-links a:hover { color: #f3ead9; }
+
+/* ===================== 动效降级 ===================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .scroll-hint { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===================== 导航 ===================== -->
+<header class="nav" id="nav">
+  <a class="nav-logo" href="#top" aria-label="山雾咖啡">
+    <!-- 山形 + 雾线 logo -->
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M4 22 L13 9 L19 17 L23 12 L28 22 Z" stroke="#2a1c10" stroke-width="1.8" stroke-linejoin="round" fill="none"/>
+      <path d="M6 26 H26 M10 29 H22" stroke="#b9803c" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    山雾咖啡
+  </a>
+  <nav class="nav-links" aria-label="主导航">
+    <a href="#journey">豆子的旅程</a>
+    <a href="#beans">本季豆单</a>
+    <a href="#voices">他们说</a>
+  </nav>
+  <a class="nav-cta magnetic" href="#order">预订咖啡豆</a>
+</header>
+
+<main id="top">
+
+  <!-- ===================== Hero ===================== -->
+  <section class="hero">
+    <!-- 山间雾气色斑 -->
+    <div class="hero-mist" aria-hidden="true"><i></i><i></i></div>
+
+    <div class="hero-inner">
+      <p class="hero-kicker" data-hero-fade>Yunnan Highland &middot; Hand Roasted</p>
+      <h1 class="hero-title" id="heroTitle">山雾之间，<br>一杯<em>醒来</em>。</h1>
+      <p class="hero-sub" data-hero-fade>
+        云南，海拔 1900 米。我们在晨雾散开前采下红透的果实，
+        小批次手工烘焙，只为把高山的清冽与果香，原封不动地注入你的清晨。
+      </p>
+      <div class="hero-actions" data-hero-fade>
+        <a href="#order" class="btn-primary magnetic">
+          <span class="txt"><span>预订你的第一袋</span><span>预订你的第一袋</span></span>
+          <span class="arrow" aria-hidden="true">&rarr;</span>
+        </a>
+        <a href="#journey" class="btn-ghost">看豆子的旅程 &darr;</a>
+      </div>
+    </div>
+
+    <!-- 手冲杯 + 蒸汽（签名动画之一：路径绘制后缭绕上飘） -->
+    <div class="hero-cup" aria-hidden="true">
+      <svg viewBox="0 0 300 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- 三缕蒸汽路径 -->
+        <g class="steam-drift">
+          <path class="steam-path" d="M118 150 C108 122 132 108 120 82 C110 60 126 44 120 24"/>
+          <path class="steam-path" d="M150 142 C140 116 164 100 152 76 C142 54 158 38 152 14" stroke-width="3"/>
+          <path class="steam-path" d="M182 150 C172 122 196 108 184 82 C174 60 190 44 184 24"/>
+        </g>
+        <!-- 手冲杯身 -->
+        <path d="M70 178 H230 L216 268 C214 282 202 292 188 292 H112 C98 292 86 282 84 268 Z"
+              fill="#2a1c10"/>
+        <!-- 杯内咖啡液面高光 -->
+        <ellipse cx="150" cy="182" rx="74" ry="9" fill="#b9803c" opacity=".9"/>
+        <!-- 杯柄 -->
+        <path d="M228 196 C254 196 262 218 252 234 C244 247 228 250 216 246"
+              stroke="#2a1c10" stroke-width="10" fill="none" stroke-linecap="round"/>
+        <!-- 杯托 -->
+        <path d="M58 308 H242" stroke="#2a1c10" stroke-width="8" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- 山脉剪影：两层视差 -->
+    <div class="hero-mountains" aria-hidden="true">
+      <svg viewBox="0 0 1440 240" preserveAspectRatio="none" data-speed="0.85" style="position:relative;">
+        <path d="M0 240 L0 170 Q180 80 360 150 Q470 195 600 130 Q760 50 920 140 Q1060 215 1200 150 Q1330 95 1440 160 L1440 240 Z"
+              fill="#dcc9a8" opacity=".55"/>
+      </svg>
+      <svg viewBox="0 0 1440 180" preserveAspectRatio="none" style="margin-top:-160px; position:relative;" data-speed="0.7">
+        <path d="M0 180 L0 120 Q220 30 430 110 Q580 165 760 95 Q930 30 1100 110 Q1280 175 1440 110 L1440 180 Z"
+              fill="#2a1c10" opacity=".92"/>
+      </svg>
+    </div>
+
+    <div class="scroll-hint" aria-hidden="true"><span>滚动</span><i></i></div>
+  </section>
+
+  <!-- ===================== 宣言区：逐词高亮 ===================== -->
+  <section class="manifesto">
+    <div class="wrap">
+      <p class="kicker">Our Belief</p>
+      <p class="manifesto-text" id="manifesto">
+        我们相信，<span class="hl">好咖啡</span>不该被流水线定义。
+        从一颗<span class="hl">红果</span>到一杯手冲，
+        中间隔着十八小时的<span class="hl">日晒</span>、
+        二十八分钟的<span class="hl">炉火</span>，
+        和一个烘焙师固执的<span class="hl">手感</span>。
+        慢一点，山的味道才追得上你。
+      </p>
+    </div>
+  </section>
+
+  <!-- ===================== 豆子的旅程：横向滚动（签名动画） ===================== -->
+  <section class="journey" id="journey">
+    <div class="journey-head">
+      <div class="wrap">
+        <div>
+          <p class="kicker">The Journey</p>
+          <h2 class="sec-title">一颗豆子的<br>四段旅程</h2>
+        </div>
+        <p class="journey-hint">继续滚动 &rarr; 横向展开</p>
+      </div>
+    </div>
+
+    <div class="journey-stage">
+      <div class="journey-track" id="journeyTrack">
+
+        <!-- 旅程 1：高山庄园 -->
+        <article class="j-card">
+          <div class="j-num">01</div>
+          <svg class="j-icon" viewBox="0 0 84 84" fill="none" aria-hidden="true">
+            <path d="M8 62 L32 22 L46 44 L56 30 L76 62 Z" stroke="#b9803c" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M14 70 H70 M24 77 H60" stroke="#2a1c10" stroke-width="2" stroke-linecap="round" opacity=".5"/>
+            <circle cx="62" cy="16" r="7" stroke="#b9803c" stroke-width="2.5"/>
+          </svg>
+          <h3>云岭之上</h3>
+          <p class="j-en">The Highland</p>
+          <p>北回归线穿过的云南保山，昼夜温差 14℃，豆子在山雾里慢慢攒糖。海拔每高一百米，甜感就深一分。</p>
+          <p class="j-data">海拔 <b>1900</b> m &nbsp;&middot;&nbsp; 年均雾日 <b>120</b> 天</p>
+        </article>
+
+        <!-- 旅程 2：红果手摘 -->
+        <article class="j-card">
+          <div class="j-num">02</div>
+          <svg class="j-icon" viewBox="0 0 84 84" fill="none" aria-hidden="true">
+            <circle cx="32" cy="52" r="13" stroke="#b9803c" stroke-width="2.5"/>
+            <circle cx="56" cy="44" r="13" stroke="#2a1c10" stroke-width="2.5" opacity=".6"/>
+            <path d="M36 38 C40 22 52 14 64 12 M64 12 C60 20 62 26 58 32" stroke="#2a1c10" stroke-width="2.5" stroke-linecap="round"/>
+          </svg>
+          <h3>只摘全红的果</h3>
+          <p class="j-en">Hand Picked</p>
+          <p>采摘队凌晨上山，只摘糖度 22 以上的全红果——青果一颗不要。一个熟练的采摘人，一天最多收 40 公斤。</p>
+          <p class="j-data">糖度 <b>22+</b> Brix &nbsp;&middot;&nbsp; 人工筛除率 <b>31%</b></p>
+        </article>
+
+        <!-- 旅程 3：日晒发酵 -->
+        <article class="j-card">
+          <div class="j-num">03</div>
+          <svg class="j-icon" viewBox="0 0 84 84" fill="none" aria-hidden="true">
+            <circle cx="42" cy="40" r="14" stroke="#b9803c" stroke-width="2.5"/>
+            <path d="M42 12 V20 M42 60 V68 M14 40 H22 M62 40 H70 M22 20 L28 26 M56 54 L62 60 M62 20 L56 26 M28 54 L22 60"
+                  stroke="#b9803c" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M14 74 H70" stroke="#2a1c10" stroke-width="2.5" stroke-linecap="round" opacity=".6"/>
+          </svg>
+          <h3>晒足十八小时</h3>
+          <p class="j-en">Sun Dried</p>
+          <p>高架晒床上薄铺一层，每两小时翻动一次。山风与日光轮班，果胶的甜被一点点锁进豆芯，发酵出红酒般的尾韵。</p>
+          <p class="j-data">日晒 <b>18</b> 天 &nbsp;&middot;&nbsp; 每日翻晒 <b>6</b> 次</p>
+        </article>
+
+        <!-- 旅程 4：手工烘焙 -->
+        <article class="j-card">
+          <div class="j-num">04</div>
+          <svg class="j-icon" viewBox="0 0 84 84" fill="none" aria-hidden="true">
+            <path d="M24 70 C12 56 16 38 30 30 C28 20 36 10 46 10 C44 18 48 22 54 26 C68 34 70 56 58 70 Z"
+                  stroke="#b9803c" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M38 54 C36 46 44 44 44 36" stroke="#2a1c10" stroke-width="2.5" stroke-linecap="round" opacity=".6"/>
+          </svg>
+          <h3>炉火上的二十八分钟</h3>
+          <p class="j-en">Hand Roasted</p>
+          <p>200 克一锅的小批次直火烘焙。烘焙师靠听爆裂声、看豆色、闻烟气来收火——曲线只是参考，手感才是答案。</p>
+          <p class="j-data">单锅 <b>200</b> g &nbsp;&middot;&nbsp; 烘焙 <b>28</b> min</p>
+        </article>
+
+        <!-- 旅程终点：注入 -->
+        <article class="j-card" style="justify-content: center; text-align: center; background: var(--dark); color: #f3ead9; border-color: transparent;">
+          <svg class="j-icon" viewBox="0 0 84 84" fill="none" aria-hidden="true" style="margin: 0 auto 1.5rem;">
+            <path d="M28 12 C24 24 36 28 32 40" stroke="#b9803c" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M44 8 C40 20 52 24 48 36" stroke="#b9803c" stroke-width="2.5" stroke-linecap="round"/>
+            <path d="M18 48 H66 L61 72 C60 77 56 80 51 80 H33 C28 80 24 77 23 72 Z" stroke="#f3ead9" stroke-width="2.5" stroke-linejoin="round"/>
+          </svg>
+          <h3 style="font-size: 1.7rem;">然后，<br>到你杯中。</h3>
+          <p style="color: rgba(243,234,217,.6); flex: 0; margin-top: 1.2rem;">烘焙完成 48 小时内发出，<br>赏味期内的每一杯都是山的现场。</p>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 数字区 ===================== -->
+  <section class="stats">
+    <div class="wrap">
+      <div class="stats-grid" data-reveal data-stagger="0.12">
+        <div class="stat">
+          <div class="stat-val"><span data-count="1900">0</span><span class="stat-unit">m</span></div>
+          <div class="stat-label">庄园海拔</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val"><span data-count="86.5">0</span><span class="stat-unit">分</span></div>
+          <div class="stat-label">SCA 杯测均分</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val"><span data-count="200">0</span><span class="stat-unit">g</span></div>
+          <div class="stat-label">单锅烘焙量</div>
+        </div>
+        <div class="stat">
+          <div class="stat-val"><span data-count="48">0</span><span class="stat-unit">h</span></div>
+          <div class="stat-label">烘焙后发货时限</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 本季豆单 ===================== -->
+  <section class="beans" id="beans">
+    <div class="wrap">
+      <div class="beans-head" data-reveal>
+        <div>
+          <p class="kicker">Seasonal Menu</p>
+          <h2 class="sec-title">本季豆单</h2>
+        </div>
+        <p style="max-width: 24em; color: var(--ink-soft); font-weight: 300; font-size: .95rem;">
+          每一支豆都来自同一片云南山场的不同处理法。产季限定，烘完即止。
+        </p>
+      </div>
+
+      <div class="beans-grid" data-reveal data-stagger="0.15">
+
+        <!-- 豆 1：晨雾日晒 -->
+        <article class="bean-card">
+          <div class="bean-visual" style="background: linear-gradient(160deg, #e9dcc3, #d9c39a);">
+            <span class="bean-tag">日晒 &middot; 浅烘</span>
+            <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
+              <ellipse cx="60" cy="60" rx="34" ry="46" fill="#2a1c10"/>
+              <path d="M60 20 C48 42 72 78 60 100" stroke="#e9dcc3" stroke-width="5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="bean-body">
+            <h3>晨雾 &middot; 日晒</h3>
+            <p class="bean-notes">Sun Mist &mdash; 草莓 / 红酒 / 蜂蜜尾韵</p>
+            <p>十八天高架日晒的招牌之作。入口是熟透的莓果甜，凉下来浮出红酒般的发酵感，适合清晨第一杯手冲。</p>
+            <div class="bean-foot">
+              <span class="bean-price">&yen;88 <small>/ 200g</small></span>
+              <a class="bean-link" href="#order">加入豆单 &rarr;</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 豆 2：云岭水洗 -->
+        <article class="bean-card">
+          <div class="bean-visual" style="background: linear-gradient(160deg, #dde3d3, #c2cdb2);">
+            <span class="bean-tag">水洗 &middot; 浅中烘</span>
+            <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
+              <ellipse cx="60" cy="60" rx="34" ry="46" fill="#3a2a18"/>
+              <path d="M60 20 C48 42 72 78 60 100" stroke="#dde3d3" stroke-width="5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="bean-body">
+            <h3>云岭 &middot; 水洗</h3>
+            <p class="bean-notes">Cloud Ridge &mdash; 柑橘 / 茉莉 / 红茶感</p>
+            <p>山泉水洗，干净是它的性格。明亮的柑橘酸甜里裹着一缕茉莉花香，尾段是云南滇红般的顺滑茶感。</p>
+            <div class="bean-foot">
+              <span class="bean-price">&yen;78 <small>/ 200g</small></span>
+              <a class="bean-link" href="#order">加入豆单 &rarr;</a>
+            </div>
+          </div>
+        </article>
+
+        <!-- 豆 3：炉影蜜处理 -->
+        <article class="bean-card">
+          <div class="bean-visual" style="background: linear-gradient(160deg, #e4cfae, #cda76e);">
+            <span class="bean-tag">蜜处理 &middot; 中深烘</span>
+            <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
+              <ellipse cx="60" cy="60" rx="34" ry="46" fill="#1c130b"/>
+              <path d="M60 20 C48 42 72 78 60 100" stroke="#e4cfae" stroke-width="5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="bean-body">
+            <h3>炉影 &middot; 蜜处理</h3>
+            <p class="bean-notes">Ember &mdash; 黑糖 / 烤榛子 / 可可</p>
+            <p>保留果胶慢晒后的中深烘，黑糖与烤榛子的厚甜，奶咖里也立得住。给偏爱醇厚口感的你。</p>
+            <div class="bean-foot">
+              <span class="bean-price">&yen;82 <small>/ 200g</small></span>
+              <a class="bean-link" href="#order">加入豆单 &rarr;</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 证言 marquee ===================== -->
+  <section class="voices" id="voices">
+    <p class="voices-label" data-reveal>What They Say</p>
+    <div class="marquee">
+      <div class="marquee-track">
+        <!-- 内容重复两份以实现无缝循环：第一份 -->
+        <div class="voice-card"><p class="v-quote">第一次喝到不输埃塞日晒的国产豆，莓果香真实得不像话。</p><p class="v-who"><b>阿初</b> &middot; 独立咖啡馆主理人 &middot; 大理</p></div>
+        <div class="voice-card"><p class="v-quote">袋子上印着烘焙日期和锅次，这种认真劲儿现在很少见了。</p><p class="v-who"><b>Momo</b> &middot; 家庭手冲玩家 &middot; 上海</p></div>
+        <div class="voice-card"><p class="v-quote">晨雾日晒凉到 40 度的那口红酒感，是我今年的咖啡时刻。</p><p class="v-who"><b>老白</b> &middot; SCA 认证杯测师</p></div>
+        <div class="voice-card"><p class="v-quote">回购第六袋。云南豆早就不是"平替"，是另一种风土。</p><p class="v-who"><b>江屿</b> &middot; 咖啡博主 &middot; 成都</p></div>
+        <div class="voice-card"><p class="v-quote">店里把云岭水洗做单品挂耳，客人问产地时我们很骄傲。</p><p class="v-who"><b>Yuki</b> &middot; 连锁咖啡品牌采购</p></div>
+        <!-- 第二份（复制） -->
+        <div class="voice-card" aria-hidden="true"><p class="v-quote">第一次喝到不输埃塞日晒的国产豆，莓果香真实得不像话。</p><p class="v-who"><b>阿初</b> &middot; 独立咖啡馆主理人 &middot; 大理</p></div>
+        <div class="voice-card" aria-hidden="true"><p class="v-quote">袋子上印着烘焙日期和锅次，这种认真劲儿现在很少见了。</p><p class="v-who"><b>Momo</b> &middot; 家庭手冲玩家 &middot; 上海</p></div>
+        <div class="voice-card" aria-hidden="true"><p class="v-quote">晨雾日晒凉到 40 度的那口红酒感，是我今年的咖啡时刻。</p><p class="v-who"><b>老白</b> &middot; SCA 认证杯测师</p></div>
+        <div class="voice-card" aria-hidden="true"><p class="v-quote">回购第六袋。云南豆早就不是"平替"，是另一种风土。</p><p class="v-who"><b>江屿</b> &middot; 咖啡博主 &middot; 成都</p></div>
+        <div class="voice-card" aria-hidden="true"><p class="v-quote">店里把云岭水洗做单品挂耳，客人问产地时我们很骄傲。</p><p class="v-who"><b>Yuki</b> &middot; 连锁咖啡品牌采购</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== 暗色收束 CTA ===================== -->
+  <section class="finale" id="order">
+    <div class="wrap">
+      <p class="finale-kicker" data-reveal>This Season Only</p>
+      <h2 class="finale-title" data-reveal>山还在出豆，<br>雾还没散。</h2>
+      <p class="finale-sub" data-reveal>本季豆单产量有限，烘完即下架。预订后 48 小时内新鲜烘焙发出。</p>
+      <div class="finale-actions" data-reveal>
+        <button class="btn-finale magnetic" type="button">预订你的第一袋 &rarr;</button>
+      </div>
+      <p class="finale-note" data-reveal>顺丰冷链直发 &middot; 不满意首袋全额退</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== 页脚 ===================== -->
+<footer class="footer">
+  <div class="wrap">
+    <span class="footer-logo">山雾咖啡 MISTPEAK COFFEE</span>
+    <nav class="footer-links" aria-label="页脚导航">
+      <a href="#journey">豆子的旅程</a>
+      <a href="#beans">本季豆单</a>
+      <a href="#order">预订</a>
+    </nav>
+    <span>&copy; 2026 山雾咖啡 &middot; 云南保山</span>
+  </div>
+</footer>
+
+<!-- ===================== 动画库 CDN ===================== -->
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/split-type@0.3.4/umd/index.min.js"></script>
+
+<script>
+/*
+ * 动画编排总控
+ * 全页统一动画语言：缓动 power3.out，时长 0.5 / 0.9 / 1.4 三档
+ * 渐进增强：所有进场用 gsap.from（初始态由 JS 设置），JS 失败时页面仍完整可读
+ */
+(function () {
+  // GSAP 未加载（CDN 失败）时直接退出，页面保持静态可读
+  if (typeof gsap === 'undefined') return;
+  gsap.registerPlugin(ScrollTrigger);
+
+  // 全页统一缓动与时长体系
+  var EASE = 'power3.out';
+  var DUR = { fast: 0.5, base: 0.9, slow: 1.4 };
+
+  // 系统"减弱动态效果"降级：所有动画瞬间完成
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) gsap.globalTimeline.timeScale(100);
+
+  // ---------- Lenis 平滑滚动（与 ScrollTrigger 同步） ----------
+  if (!reduceMotion && typeof Lenis !== 'undefined') {
+    var lenis = new Lenis({ lerp: 0.1 });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(function (time) { lenis.raf(time * 1000); });
+    gsap.ticker.lagSmoothing(0);
+  }
+
+  // ---------- 导航滚动态 ----------
+  var nav = document.getElementById('nav');
+  ScrollTrigger.create({
+    start: 80,
+    onUpdate: function (self) { nav.classList.toggle('is-scrolled', self.scroll() > 80); },
+    onToggle: function (self) { nav.classList.toggle('is-scrolled', self.isActive); }
+  });
+
+  // ---------- 初始化主流程（等字体就绪，避免 SplitType 拆字后错位） ----------
+  function init() {
+
+    // ===== Hero：巨字逐字浮起（开场冲击） =====
+    if (typeof SplitType !== 'undefined') {
+      var split = new SplitType('#heroTitle', { types: 'lines, chars' });
+      gsap.from(split.chars, {
+        yPercent: 112, rotate: 5, opacity: 0,
+        duration: DUR.base, ease: EASE, stagger: 0.045, delay: 0.25
+      });
+    } else {
+      gsap.from('#heroTitle', { y: 70, opacity: 0, duration: DUR.base, ease: EASE, delay: 0.25 });
+    }
+
+    // Hero 副文案与按钮错峰浮现
+    gsap.from('[data-hero-fade]', {
+      y: 44, opacity: 0, duration: DUR.base, ease: EASE, stagger: 0.14, delay: 0.55
+    });
+
+    // Hero 蒸汽：三缕路径依次绘制（签名动画之一）
+    document.querySelectorAll('.steam-path').forEach(function (path, i) {
+      var len = path.getTotalLength();
+      gsap.fromTo(path,
+        { strokeDasharray: len, strokeDashoffset: len },
+        { strokeDashoffset: 0, duration: DUR.slow, ease: 'power2.inOut', delay: 0.9 + i * 0.25 }
+      );
+    });
+    gsap.from('.hero-cup', { y: 50, opacity: 0, duration: DUR.slow, ease: EASE, delay: 0.6 });
+
+    // Hero 山脉视差：data-speed 为深度系数
+    gsap.utils.toArray('.hero [data-speed]').forEach(function (el) {
+      gsap.to(el, {
+        y: function () { return (1 - parseFloat(el.dataset.speed)) * 220; },
+        ease: 'none',
+        scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true }
+      });
+    });
+
+    // 滚动提示在滚出首屏时淡出
+    gsap.to('.scroll-hint', {
+      opacity: 0, ease: 'none',
+      scrollTrigger: { trigger: '.hero', start: 'top top', end: '30% top', scrub: true }
+    });
+
+    // ===== 宣言区：文字逐词从灰变深（滚动驱动） =====
+    var manifesto = document.getElementById('manifesto');
+    if (manifesto) {
+      // 把文本节点按字符包成 span.w，保留 .hl 关键词整体
+      (function wrapWords(node) {
+        Array.prototype.slice.call(node.childNodes).forEach(function (child) {
+          if (child.nodeType === 3) {
+            var frag = document.createDocumentFragment();
+            child.textContent.split('').forEach(function (ch) {
+              if (ch.trim() === '') { frag.appendChild(document.createTextNode(ch)); return; }
+              var s = document.createElement('span');
+              s.className = 'w'; s.textContent = ch;
+              frag.appendChild(s);
+            });
+            node.replaceChild(frag, child);
+          } else if (child.nodeType === 1 && child.classList.contains('hl')) {
+            child.classList.add('w'); // 关键词整体作为一个高亮单元
+          } else if (child.nodeType === 1) {
+            wrapWords(child);
+          }
+        });
+      })(manifesto);
+
+      // 滚动时逐词点亮：普通字变深咖，关键词变琥珀
+      gsap.to(manifesto.querySelectorAll('.w'), {
+        color: function (i, el) {
+          return el.classList.contains('hl') ? '#b9803c' : '#2a1c10';
+        },
+        stagger: 0.6, ease: 'none',
+        scrollTrigger: {
+          trigger: manifesto,
+          start: 'top 78%', end: 'bottom 45%',
+          scrub: 0.8
+        }
+      });
+    }
+
+    // ===== 签名动画：豆子的旅程横向滚动 =====
+    // 仅桌面端启用 pin 横向滚动；窄屏由 CSS 改为纵向排列 + 普通 reveal
+    var mm = gsap.matchMedia();
+    mm.add('(min-width: 769px)', function () {
+      var track = document.getElementById('journeyTrack');
+      var getDist = function () { return track.scrollWidth - window.innerWidth; };
+      gsap.to(track, {
+        x: function () { return -getDist(); },
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.journey-stage',
+          start: 'top top',
+          end: function () { return '+=' + getDist(); },
+          pin: true, scrub: 1, invalidateOnRefresh: true
+        }
+      });
+      // 卡片进入横向视口时轻微浮起，增加纵深节奏
+      gsap.utils.toArray('.j-card').forEach(function (card, i) {
+        gsap.from(card, {
+          y: 60, opacity: 0, duration: DUR.base, ease: EASE, delay: i * 0.05,
+          scrollTrigger: { trigger: '.journey-stage', start: 'top 70%' }
+        });
+      });
+    });
+    mm.add('(max-width: 768px)', function () {
+      // 移动端：卡片纵向依次 reveal
+      gsap.utils.toArray('.j-card').forEach(function (card) {
+        gsap.from(card, {
+          y: 60, opacity: 0, duration: DUR.base, ease: EASE,
+          scrollTrigger: { trigger: card, start: 'top 85%' }
+        });
+      });
+    });
+
+    // ===== 通用 scroll reveal：所有 [data-reveal] =====
+    document.querySelectorAll('[data-reveal]').forEach(function (el) {
+      gsap.from(el.dataset.stagger ? el.children : el, {
+        y: 60, opacity: 0, duration: DUR.base, ease: EASE,
+        stagger: el.dataset.stagger ? parseFloat(el.dataset.stagger) : 0,
+        scrollTrigger: { trigger: el, start: 'top 82%' }
+      });
+    });
+
+    // ===== 数字滚动累加 =====
+    document.querySelectorAll('[data-count]').forEach(function (el) {
+      var target = parseFloat(el.dataset.count);
+      var isFloat = String(el.dataset.count).indexOf('.') > -1;
+      gsap.fromTo(el, { textContent: 0 }, {
+        textContent: target, duration: 1.8, ease: 'power1.out',
+        snap: { textContent: isFloat ? 0.1 : 1 },
+        scrollTrigger: { trigger: el, start: 'top 85%' },
+        onUpdate: function () {
+          // 浮点数保留一位小数显示
+          if (isFloat) el.textContent = parseFloat(el.textContent).toFixed(1);
+        }
+      });
+    });
+
+    // ===== 磁性按钮（仅精确指针设备启用） =====
+    if (window.matchMedia('(pointer: fine)').matches && !reduceMotion) {
+      document.querySelectorAll('.magnetic').forEach(function (btn) {
+        btn.addEventListener('mousemove', function (e) {
+          var r = btn.getBoundingClientRect();
+          gsap.to(btn, {
+            x: (e.clientX - r.left - r.width / 2) * 0.3,
+            y: (e.clientY - r.top - r.height / 2) * 0.3,
+            duration: 0.3
+          });
+        });
+        btn.addEventListener('mouseleave', function () {
+          gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
+        });
+      });
+    }
+
+    // 布局动画就绪后刷新一次定位
+    ScrollTrigger.refresh();
+  }
+
+  // 字体就绪后再初始化，避免拆字错位
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(init);
+  } else {
+    window.addEventListener('load', init);
+  }
+})();
+</script>
+</body>
+</html>
