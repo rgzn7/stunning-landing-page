@@ -13,11 +13,11 @@ GitHub Pages：
 
 ## 效果预览
 
-![山雾咖啡示例](docs/screenshots/coffee-brand-warm.png)
+![山雾咖啡示例](docs/screenshots/coffee-brand-warm.png?v=e68b2b6)
 
-![CodeLens 示例](docs/screenshots/ai-devtool-dark.png)
+![CodeLens 示例](docs/screenshots/ai-devtool-dark.png?v=e68b2b6)
 
-![码丁星球示例](docs/screenshots/kids-coding-playful.png)
+![码丁星球示例](docs/screenshots/kids-coding-playful.png?v=e68b2b6)
 
 ## 能力范围
 
