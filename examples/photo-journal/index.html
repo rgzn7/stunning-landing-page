@@ -8,8 +8,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="XISY Photo Journal 个人摄影作品网站原型，展示纪实、人像、城市与风景摄影。" />
-  <title>XISY Photo Journal | 个人摄影作品</title>
+  <meta name="description" content="Rose Photo Journal 个人摄影作品网站原型，展示纪实、人像、城市与风景摄影。" />
+  <title>Rose Photo Journal | 个人摄影作品</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@500;700;900&family=Source+Han+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
@@ -340,7 +340,8 @@
       text-wrap: balance;
     }
 
-    .hero-title .line {
+    .hero-title-row {
+      display: block;
       overflow: hidden;
     }
 
@@ -1470,7 +1471,7 @@
     <a class="brand" href="#top" aria-label="返回首页">
       <span class="brand-mark"><i data-lucide="aperture"></i></span>
       <span class="brand-text">
-        <strong>XISY</strong>
+        <strong>Rose</strong>
         <span>PHOTO JOURNAL</span>
       </span>
     </a>
@@ -1480,7 +1481,7 @@
       <a href="#gallery">档案</a>
       <a href="#contact">联系</a>
     </nav>
-    <a class="icon-button magnetic" href="mailto:hello@xisy.photo" aria-label="发送邮件">
+    <a class="icon-button magnetic" href="mailto:hello@rose.photo" aria-label="发送邮件">
       <i data-lucide="mail"></i>
     </a>
   </header>
@@ -1505,7 +1506,11 @@
 
       <div class="hero-content">
         <p class="eyebrow reveal">纪实、人像、城市与旷野</p>
-        <h1 id="hero-title" class="hero-title split-title">XISY Photo Journal</h1>
+        <h1 id="hero-title" class="hero-title split-title">
+          <span class="hero-title-row">Rose</span>
+          <span class="hero-title-row">Photo</span>
+          <span class="hero-title-row">Journal</span>
+        </h1>
         <div class="hero-meta stagger">
           <p class="hero-copy">把光线、呼吸和陌生街角收进同一个取景框。这里是一份个人摄影档案，也是一场关于时间、距离与凝视的视觉散步。</p>
           <div class="hero-actions">
@@ -1741,7 +1746,7 @@
           <h2 id="contact-title" class="reveal">把下一段故事留给镜头。</h2>
           <p class="reveal">这个区域适合作为真实网站的预约入口。替换邮箱、城市和社交账号后，就可以承接个人约拍、品牌视觉和长期纪实项目。</p>
           <div class="contact-actions">
-            <a class="button is-primary magnetic" href="mailto:hello@xisy.photo">发送拍摄需求 <i data-lucide="send"></i></a>
+            <a class="button is-primary magnetic" href="mailto:hello@rose.photo">发送拍摄需求 <i data-lucide="send"></i></a>
             <a class="button magnetic" href="#gallery">回看作品 <i data-lucide="grid-2x2"></i></a>
           </div>
         </div>
@@ -1758,7 +1763,7 @@
             <i data-lucide="mail"></i>
             <div>
               <strong>Email</strong>
-              <a href="mailto:hello@xisy.photo">hello@xisy.photo</a>
+              <a href="mailto:hello@rose.photo">hello@rose.photo</a>
             </div>
           </div>
           <div class="contact-row">
@@ -1774,7 +1779,7 @@
   </main>
 
   <footer class="footer">
-    <span>© 2026 XISY Photo Journal</span>
+    <span>© 2026 Rose Photo Journal</span>
     <span>Personal Photography Portfolio Prototype</span>
   </footer>
 
@@ -1933,7 +1938,7 @@
       }
 
       if (window.SplitType) {
-        new SplitType(".split-title", { types: "lines, words, chars" });
+        new SplitType(".split-title .hero-title-row", { types: "words, chars" });
       }
 
       gsap.set(".hero-title .char", { yPercent: 112, opacity: 0 });

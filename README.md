@@ -8,7 +8,7 @@
 - [山雾咖啡：温暖品牌系](https://rgzn7.github.io/stunning-landing-page/examples/coffee-brand-warm/)
 - [CodeLens：暗夜科技系](https://rgzn7.github.io/stunning-landing-page/examples/ai-devtool-dark/)
 - [码丁星球：活泼游戏系](https://rgzn7.github.io/stunning-landing-page/examples/kids-coding-playful/)
-- [XISY Photo Journal：摄影作品集](https://rgzn7.github.io/stunning-landing-page/examples/photo-journal/)（额外示例，未纳入 benchmark）
+- [Rose Photo Journal：摄影作品集](https://rgzn7.github.io/stunning-landing-page/examples/photo-journal/)（额外示例，未纳入 benchmark）
 
 ## 效果预览
 
@@ -18,7 +18,7 @@
 
 ![码丁星球示例](docs/screenshots/kids-coding-playful.png?v=e68b2b6)
 
-![XISY Photo Journal 示例](docs/screenshots/photo-journal.png?v=photo-journal-20260611)
+![Rose Photo Journal 示例](docs/screenshots/photo-journal.png?v=photo-journal-20260612)
 
 ## 能力范围
 
@@ -88,4 +88,4 @@ SKILL.md 中提到的 Apple、Duolingo、Canva、Stripe、Linear 等名称仅用
 
 ## License
 
-MIT
+本项目原创代码与文档采用 MIT License。第三方图片、字体、图标和 JavaScript 库不包含在该授权范围内，详见 [Third-Party Notices](docs/THIRD_PARTY_NOTICES.md)。
