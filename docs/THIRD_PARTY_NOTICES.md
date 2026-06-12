@@ -30,6 +30,12 @@ Unsplash 的图片许可不当然包含照片中可识别人物、商标、艺�
 
 页面中的 `Rose Photo Journal`、作品名称、拍摄地点、摄影项目和联系信息均为虚构的界面演示内容，不表示照片由 Rose 或本项目作者拍摄，也不表示照片中的人物或摄影作者为该页面提供背书。
 
+## Video Creator Cinematic 示例
+
+`examples/video-creator-cinematic/index.html` 不引用第三方图片或 JavaScript 库。Hero 中的虹彩流体由页面内联的原生 WebGL 着色器实时生成，作品缩略图由 CSS 渐变绘制。
+
+页面中的 `LU YUAN / 陆远`、作品名称、从业经历、奖项入围、联系信息和社交账号均为虚构的界面演示内容。NOWNESS、北京国际短片联展、DaVinci Resolve、After Effects、Blender、TouchDesigner、Bilibili、Instagram 和 Vimeo 等名称仅用于描述虚构创作者的工作语境或界面占位，不表示相关组织、品牌或平台与本项目存在从属、合作、授权或背书关系。
+
 ## 字体
 
 Photo Journal 示例通过 Google Fonts 加载 `Noto Serif SC`：
@@ -38,6 +44,16 @@ Photo Journal 示例通过 Google Fonts 加载 `Noto Serif SC`：
 - 许可：[SIL Open Font License 1.1](https://openfontlicense.org/open-font-license-official-text/)
 
 字体文件不由本仓库以 MIT License 重新授权。字体的网络加载同时受 [Google Fonts 条款](https://developers.google.com/fonts/terms)约束。
+
+Video Creator Cinematic 示例通过 Google Fonts 加载以下字体：
+
+| 字体 | 上游项目 | 许可 |
+| --- | --- | --- |
+| Unbounded | [w3f/unbounded](https://github.com/w3f/unbounded) | SIL Open Font License 1.1 |
+| IBM Plex Mono | [IBM/plex](https://github.com/IBM/plex) | SIL Open Font License 1.1 |
+| Noto Sans SC | [Noto CJK](https://github.com/notofonts/noto-cjk) | SIL Open Font License 1.1 |
+
+这些字体文件由浏览器通过 Google Fonts 加载，不包含在本仓库源码中，也不由本仓库以 MIT License 重新授权。网络加载同时受 [Google Fonts API Terms of Service](https://developers.google.com/fonts/terms)约束。
 
 ## 前端库与图标
 

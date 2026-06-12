@@ -9,6 +9,7 @@
 - [CodeLens：暗夜科技系](https://rgzn7.github.io/stunning-landing-page/examples/ai-devtool-dark/)
 - [码丁星球：活泼游戏系](https://rgzn7.github.io/stunning-landing-page/examples/kids-coding-playful/)
 - [Rose Photo Journal：摄影作品集](https://rgzn7.github.io/stunning-landing-page/examples/photo-journal/)（额外示例，未纳入 benchmark）
+- [LU YUAN：电影感视频创作者作品集](https://rgzn7.github.io/stunning-landing-page/examples/video-creator-cinematic/)（额外示例，未纳入 benchmark）
 
 ## 效果预览
 
@@ -19,6 +20,8 @@
 ![码丁星球示例](docs/screenshots/kids-coding-playful.png?v=e68b2b6)
 
 ![Rose Photo Journal 示例](docs/screenshots/photo-journal.png?v=photo-journal-20260612)
+
+![LU YUAN 视频创作者示例](docs/screenshots/video-creator-cinematic.png?v=video-creator-cinematic-20260612)
 
 ## 能力范围
 
@@ -70,7 +73,8 @@ git clone https://github.com/rgzn7/stunning-landing-page.git ~/.codex/skills/stu
 │   ├── coffee-brand-warm/
 │   ├── ai-devtool-dark/
 │   ├── kids-coding-playful/
-│   └── photo-journal/
+│   ├── photo-journal/
+│   └── video-creator-cinematic/
 └── docs/
     ├── benchmark.md
     └── screenshots/
@@ -78,7 +82,7 @@ git clone https://github.com/rgzn7/stunning-landing-page.git ~/.codex/skills/stu
 
 ## 评测
 
-当前评测包含 3 个典型场景：精品咖啡品牌、AI 开发者工具、儿童编程 App。评测维度覆盖滚动动画、动效降级、Hero 冲击力、无破图风险、主题文案匹配、视觉风格匹配和图标规范。`examples/photo-journal/` 是额外迁移示例，暂未纳入当前 benchmark 数据。
+当前评测包含 3 个典型场景：精品咖啡品牌、AI 开发者工具、儿童编程 App。评测维度覆盖滚动动画、动效降级、Hero 冲击力、无破图风险、主题文案匹配、视觉风格匹配和图标规范。`examples/photo-journal/` 与 `examples/video-creator-cinematic/` 是额外迁移示例，暂未纳入当前 benchmark 数据。
 
 详见 [docs/benchmark.md](docs/benchmark.md)。
 

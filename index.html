@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <!--
-  @Date: 2026-06-11
+  @Date: 2026-06-12
   @Author: xisy
   @Discription: Stunning Landing Page 产品展示页。
-                创意工具系与先锋编辑感结合，签名动画为“一句话穿过四种视觉宇宙”的
+                创意工具系与先锋编辑感结合，签名动画为“一句话穿过五种视觉宇宙”的
                 sticky 定格叙事，使用 GSAP + ScrollTrigger + Lenis + SplitType 驱动。
 -->
 <html lang="zh-CN">
@@ -847,10 +847,10 @@
       transform: rotate(3deg);
     }
 
-    /* ==================== 签名叙事：四种视觉宇宙 ==================== */
+    /* ==================== 签名叙事：五种视觉宇宙 ==================== */
     .showcase {
       position: relative;
-      height: 360vh;
+      height: 440vh;
       background: var(--night);
       color: var(--white);
     }
@@ -2376,7 +2376,7 @@
           </p>
           <div class="hero-actions">
             <a class="button is-dark magnetic" href="#showcase">
-              <span>进入四种宇宙</span>
+              <span>进入五种宇宙</span>
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="m7 10 5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -2461,7 +2461,7 @@
       </div>
     </section>
 
-    <!-- 签名动画：同一句 prompt 穿过四种主题原型 -->
+    <!-- 签名动画：同一句 prompt 穿过五种主题原型 -->
     <section class="showcase" id="showcase" aria-labelledby="showcase-title">
       <div class="showcase-stage">
         <div class="showcase-glow" aria-hidden="true"></div>
@@ -2470,18 +2470,19 @@
             <span class="eyebrow">Signature Moment</span>
             <h2 class="showcase-title" id="showcase-title">
               一句话，
-              <span>四种视觉宇宙。</span>
+              <span>五种视觉宇宙。</span>
             </h2>
             <div class="prompt-card">
               使用 <b>$stunning-landing-page</b> 为我的产品设计官网首页。
               先判断情绪与叙事，再输出有签名动画的单文件 HTML。
             </div>
             <div class="world-meta">
-              <div class="world-count"><b>01</b> <span>/ 04</span></div>
+              <div class="world-count"><b>01</b> <span>/ 05</span></div>
               <p class="world-name">温暖品牌系<br>山雾咖啡</p>
             </div>
             <div class="world-dots" aria-hidden="true">
               <button class="world-dot is-active" tabindex="-1"></button>
+              <button class="world-dot" tabindex="-1"></button>
               <button class="world-dot" tabindex="-1"></button>
               <button class="world-dot" tabindex="-1"></button>
               <button class="world-dot" tabindex="-1"></button>
@@ -2535,6 +2536,18 @@
                 <span class="world-badge" style="--accent:#c7a25a">Avant / Journal</span>
               </a>
               <span class="world-side-label" style="--accent:#c7a25a">Curiosity</span>
+            </article>
+
+            <article class="world" data-accent="#d4ff4f" data-name="先锋影像系|LU YUAN">
+              <a class="world-browser interactive" href="examples/video-creator-cinematic/" aria-label="打开视频创作者作品集示例">
+                <div class="browser-bar" aria-hidden="true">
+                  <i class="browser-light"></i><i class="browser-light"></i><i class="browser-light"></i>
+                  <span class="browser-address">luyuan.tv / showreel</span>
+                </div>
+                <img src="docs/screenshots/video-creator-cinematic.png" alt="LU YUAN 电影感视频创作者作品集网站">
+                <span class="world-badge" style="--accent:#d4ff4f">Cinematic / Fluid</span>
+              </a>
+              <span class="world-side-label" style="--accent:#d4ff4f">Immersion</span>
             </article>
           </div>
         </div>
@@ -2676,7 +2689,7 @@
     <section class="gallery" aria-labelledby="gallery-title">
       <div class="wrap">
         <header class="gallery-heading">
-          <h2 id="gallery-title">四次命题，<br>四种完全不同的回答。</h2>
+          <h2 id="gallery-title">五次命题，<br>五种完全不同的回答。</h2>
           <a class="text-link" href="https://github.com/rgzn7/stunning-landing-page/tree/main/examples" target="_blank" rel="noreferrer">
             查看源代码
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -2727,6 +2740,17 @@
             <div class="project-meta">
               <h3>Rose Photo Journal</h3>
               <p>Avant Journal / Curiosity</p>
+            </div>
+          </a>
+
+          <a class="project-card tilt interactive" href="examples/video-creator-cinematic/">
+            <div class="project-image">
+              <span class="project-index">05</span>
+              <img src="docs/screenshots/video-creator-cinematic.png" alt="LU YUAN 视频创作者项目截图">
+            </div>
+            <div class="project-meta">
+              <h3>LU YUAN</h3>
+              <p>Cinematic Portfolio / Immersion</p>
             </div>
           </a>
         </div>
