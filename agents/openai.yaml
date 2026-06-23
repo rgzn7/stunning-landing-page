@@ -1,8 +1,8 @@
 interface:
   display_name: "Stunning Landing Page"
-  short_description: "把主题变成有滚动叙事与高级动效的单页官网"
+  short_description: "把主题变成有滚动叙事、单屏舞台与高级动效的单页网站"
   brand_color: "#111827"
-  default_prompt: "使用 $stunning-landing-page 为我的产品做一个有滚动叙事和高级动效的官网首页，输出单个 HTML 文件。"
+  default_prompt: "使用 $stunning-landing-page 为我的产品或作品集做一个有高级动效的单页网站，输出单个 HTML 文件。"
 
 policy:
   allow_implicit_invocation: true

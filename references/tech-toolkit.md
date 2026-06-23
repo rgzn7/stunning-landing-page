@@ -6,7 +6,7 @@
 
 - 一、CDN 引入清单
 - 二、基础设施片段（Lenis 平滑滚动 / reduced-motion / 缓动体系）
-- 三、核心效果片段（逐字浮起 / sticky 叙事 / 横向滚动 / 视差 / 数字滚动 / 磁性按钮 / marquee / 流动渐变 / 噪点 / 自定义光标 / 卡片 3D 倾斜）
+- 三、核心效果片段（逐字浮起 / sticky 叙事 / 横向滚动 / 视差 / 数字滚动 / 磁性按钮 / marquee / 流动渐变 / 噪点 / 自定义光标 / 卡片 3D 倾斜 / OS-HUD / 封面遮挡舞台 / Three.js 签名物）
 - 四、性能与避坑清单
 
 ---
@@ -27,6 +27,14 @@
 <script src="https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/build/player/lottie.min.js"></script>
 <!-- 可选：canvas-confetti（庆祝粒子，Duolingo 风） -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+```
+
+Three.js 自身用模块方式按需引入：
+
+```html
+<script type="module">
+  import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
+</script>
 ```
 
 字体（Google Fonts 国内可能慢，中文项目优先系统字体栈或 fontsource 镜像）：
@@ -255,9 +263,257 @@ document.querySelectorAll('.tilt').forEach((card) => {
 });
 ```
 
+### 13. OS-HUD 状态栏与坐标反馈
+
+适合个人作品集、设计师主页、实验工作室。HUD 只放状态和导航，长文案留给舞台内容。
+
+```html
+<header class="hud" aria-label="站点状态栏">
+  <a class="hud-brand" href="#home">YOUR.STUDIO</a>
+  <nav class="hud-nav" aria-label="主导航">
+    <button data-state-target="work">WORK</button>
+    <button data-state-target="contact">CONTACT</button>
+    <button data-theme-toggle>THEME[A]</button>
+  </nav>
+  <div class="hud-meta">
+    <span data-clock>GMT+8 00:00</span>
+    <span data-coord>0000 X 0000 Y</span>
+  </div>
+</header>
+```
+
+```css
+.hud {
+  position: fixed; inset: 0; z-index: 50; pointer-events: none;
+  display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr auto;
+  padding: clamp(20px, 4vw, 56px); font-family: var(--mono, ui-monospace, monospace);
+  font-size: clamp(.72rem, 1vw, .95rem); letter-spacing: 0;
+}
+.hud a, .hud button { pointer-events: auto; }
+.hud-nav { display: flex; gap: clamp(16px, 3vw, 44px); }
+.hud button, .hud a {
+  color: inherit; background: none; border: 0; padding: .45rem .55rem; font: inherit; text-decoration: none;
+}
+.hud button:hover, .hud button:focus-visible, .hud a:hover, .hud a:focus-visible {
+  outline: 2px dotted currentColor; outline-offset: 2px;
+}
+.hud-meta { grid-column: 1 / -1; align-self: end; display: flex; justify-content: space-between; gap: 1rem; }
+@media (max-width: 700px) {
+  .hud { position: absolute; min-height: 100dvh; }
+  .hud-nav { justify-self: end; gap: .5rem; }
+  .hud-meta { font-size: .8rem; }
+}
+```
+
+```js
+// 更新坐标和时间，制造"可操作系统"的反馈感
+const coord = document.querySelector('[data-coord]');
+const clock = document.querySelector('[data-clock]');
+const pad4 = (value) => String(Math.round(value)).padStart(4, '0');
+
+if (matchMedia('(pointer: fine)').matches && coord) {
+  addEventListener('pointermove', (event) => {
+    coord.textContent = `${pad4(event.clientX)} X ${pad4(event.clientY)} Y`;
+  }, { passive: true });
+}
+
+function updateClock() {
+  if (!clock) return;
+  const now = new Date();
+  clock.textContent = `GMT+8 ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+}
+updateClock();
+setInterval(updateClock, 30000);
+```
+
+### 14. OS-HUD 单屏状态切换
+
+用在没有传统长滚动叙事的作品集页。按钮改变页面状态，同时把对应舞台滚到视口。
+
+```html
+<section id="home" data-panel="home" class="stage-panel"></section>
+<section id="work" data-panel="work" class="stage-panel"></section>
+<section id="contact" data-panel="contact" class="stage-panel"></section>
+```
+
+```css
+.stage-panel { min-height: 100dvh; position: relative; display: grid; place-items: center; }
+.stage-panel + .stage-panel { margin-top: 12vh; }
+body[data-state="work"] .hud [data-state-target="work"],
+body[data-state="contact"] .hud [data-state-target="contact"] {
+  outline: 2px dotted currentColor; outline-offset: 2px;
+}
+```
+
+```js
+// 让 HUD 成为状态控制器，而不是普通跳转菜单
+document.querySelectorAll('[data-state-target]').forEach((button) => {
+  button.addEventListener('click', () => {
+    const state = button.dataset.stateTarget;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.body.dataset.state = state;
+    document.querySelector(`[data-panel="${state}"]`)?.scrollIntoView({
+      behavior: reduce ? 'auto' : 'smooth',
+      block: 'start'
+    });
+  });
+});
+```
+
+### 15. 封面遮挡舞台层
+
+滚过封面或进入 `WORK` 状态时，用一个不透明档案面板盖住底层 3D canvas。颜色跟随品牌语气：可以是纸色、浅灰、近黑或品牌中性色；核心不是再堆一个复杂 3D，而是让页面从“沉浸封面”切到“可阅读作品档案”。
+
+```html
+<canvas id="signature-scene" class="signature-scene" aria-hidden="true"></canvas>
+
+<section id="work" data-panel="work" class="stage-panel archive-panel">
+  <canvas class="archive-paper" aria-hidden="true"></canvas>
+  <div class="archive-content">
+    <!-- 作品档案网格放这里 -->
+  </div>
+</section>
+```
+
+```css
+:root {
+  /* 示例值。按品牌替换为纸色、浅灰、近黑或其他不透明档案表面色。 */
+  --archive-surface: #f4efe5;
+}
+
+.signature-scene {
+  position: fixed; inset: 0; z-index: -1; width: 100%; height: 100%;
+}
+
+.archive-panel {
+  position: relative; z-index: 2; overflow: hidden;
+  min-height: 100dvh; background: var(--archive-surface); color: #111;
+  box-shadow: 0 -1px 0 rgba(0,0,0,.08);
+}
+
+.archive-paper {
+  position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%;
+  pointer-events: none;
+}
+
+.archive-content {
+  position: relative; z-index: 1;
+  padding: clamp(96px, 14vw, 190px) clamp(20px, 4vw, 56px);
+}
+```
+
+```js
+// 可选：给作品区画一层很轻的纸纹，避免大色块像默认背景。
+const paperCanvas = document.querySelector('.archive-paper');
+function paintPaperTexture() {
+  if (!paperCanvas) return;
+  const ratio = Math.min(devicePixelRatio || 1, 2);
+  const rect = paperCanvas.getBoundingClientRect();
+  paperCanvas.width = Math.max(1, Math.floor(rect.width * ratio));
+  paperCanvas.height = Math.max(1, Math.floor(rect.height * ratio));
+
+  const ctx = paperCanvas.getContext('2d');
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+  ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--archive-surface').trim() || '#f4efe5';
+  ctx.fillRect(0, 0, rect.width, rect.height);
+
+  ctx.fillStyle = 'rgba(20, 16, 10, 0.035)';
+  for (let i = 0; i < rect.width * rect.height / 1800; i++) {
+    ctx.fillRect(Math.random() * rect.width, Math.random() * rect.height, 1, 1);
+  }
+}
+paintPaperTexture();
+addEventListener('resize', paintPaperTexture);
+```
+
+如果需要更戏剧性的“盖住”动作，可在进入作品区时给 `.archive-panel` 加 `clip-path` 动画：
+
+```js
+gsap.fromTo('.archive-panel',
+  { clipPath: 'inset(0 0 100% 0)' },
+  {
+    clipPath: 'inset(0 0 0% 0)',
+    duration: 0.9,
+    ease: 'power3.out',
+    scrollTrigger: { trigger: '.archive-panel', start: 'top 85%', once: true }
+  }
+);
+```
+
+### 16. Three.js 全屏签名物
+
+用于 OS-HUD 系或科技旗舰系。先用几何体占位，后续可替换为品牌 3D 字标、GLTF 模型或 SVG 挤出模型。
+
+```html
+<canvas id="signature-scene" class="signature-scene" aria-hidden="true"></canvas>
+```
+
+```css
+.signature-scene {
+  position: fixed; inset: 0; z-index: -1; width: 100%; height: 100%;
+  background: radial-gradient(circle at 50% 55%, rgba(255,255,255,.62), transparent 42%);
+}
+```
+
+```js
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js';
+
+const canvas = document.querySelector('#signature-scene');
+const reduceSceneMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+if (canvas && !reduceSceneMotion) {
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.8));
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(35, innerWidth / innerHeight, 0.1, 100);
+  camera.position.set(0, 0, 7);
+
+  const mesh = new THREE.Mesh(
+    new THREE.TorusKnotGeometry(1.35, 0.36, 180, 24),
+    new THREE.MeshPhysicalMaterial({
+      color: 0x7db7ff, roughness: 0.18, metalness: 0.08,
+      transmission: 0.35, thickness: 0.9, transparent: true, opacity: 0.86
+    })
+  );
+  scene.add(mesh);
+  scene.add(new THREE.HemisphereLight(0xffffff, 0x8ab7ff, 2.2));
+
+  let targetX = 0;
+  let targetY = 0;
+  let currentX = 0;
+  let currentY = 0;
+
+  addEventListener('pointermove', (event) => {
+    targetX = (event.clientX / innerWidth - 0.5) * 2;
+    targetY = (event.clientY / innerHeight - 0.5) * 2;
+  }, { passive: true });
+
+  function resizeScene() {
+    const width = innerWidth;
+    const height = innerHeight;
+    renderer.setSize(width, height, false);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+  }
+  addEventListener('resize', resizeScene);
+  resizeScene();
+
+  function render(time) {
+    currentX += (targetX - currentX) * 0.08;
+    currentY += (targetY - currentY) * 0.08;
+    mesh.rotation.y = time * 0.00018 + currentX * 0.35;
+    mesh.rotation.x = -0.15 + currentY * 0.18;
+    renderer.render(scene, camera);
+    requestAnimationFrame(render);
+  }
+  requestAnimationFrame(render);
+}
+```
+
 ## 四、性能与避坑清单
 
 - **只动画 `transform` 和 `opacity`**。动画 `top/left/width/height/margin` 会触发重排，滚动时必卡。需要模糊渐变时 `filter` 可用但控制范围。
+- **WebGL 要有降级**：Three.js 签名物必须配静态文字/SVG/CSS 背景 fallback；`prefers-reduced-motion` 下停止渲染或改为静态图。
 - **scrub 动画加缓冲**：`scrub: 0.6~1` 比 `scrub: true` 跟手且不生硬。
 - **`will-change` 只给正在动的大元素**，且数量克制（全页超过十几个反而更卡）。
 - **pin 容器内不要用百分比高度的子元素**，ScrollTrigger pin 会改 DOM 结构，易错位；pin 元素的父级避免 `overflow: hidden`。
